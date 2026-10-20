@@ -230,11 +230,14 @@ I reviewed the code and the decisions, ran the app on desktop and phone, and ver
 
 ## Time spent
 
+Wall-clock time, measured from the first message to the final push. The discussion counts.
+
 | Phase | Time |
 | --- | --- |
-| Reading the brief, research and planning | ~1 h 45 min |
-| Implementation, tests and documentation | ~2 h |
-| **Total** | **~3 h 45 min** |
+| Reading the brief, research, choosing the stack, planning | ~1 h 45 min |
+| Implementation, tests, documentation (the API was built by a parallel agent) | ~1 h |
+| Real-email check, review, publishing | ~15 min |
+| **Total** | **~3 h** |
 
 ## Unfinished work and next steps
 

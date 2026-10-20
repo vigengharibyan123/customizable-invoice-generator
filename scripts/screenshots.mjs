@@ -16,6 +16,8 @@ const shot = async (name, path, viewport, prepare) => {
   const page = await browser.newPage({ viewport, deviceScaleFactor: 1 });
   await page.goto(`${base}${path}`);
   await page.waitForLoadState("networkidle");
+  // The editor route is lazy-loaded; wait until the invoice document is on screen.
+  if (path !== "/invoices") await page.getByRole("heading", { level: 1, name: featured.number }).waitFor();
   await prepare?.(page);
   await page.screenshot({ path: new URL(`${name}.png`, outDir).pathname, fullPage: false });
   return page;

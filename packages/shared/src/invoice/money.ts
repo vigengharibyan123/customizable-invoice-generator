@@ -1,4 +1,4 @@
-import Big, { type BigSource } from "big.js";
+import { Big, type BigSource } from "big.js";
 
 /**
  * User-entered amounts travel through the app as plain decimal strings ("12", "12.5", "0.75"):

@@ -1,4 +1,4 @@
-import Big from "big.js";
+import { Big } from "big.js";
 import { z } from "zod";
 import { calculateTotals, type InvoiceTotals } from "./calculate";
 import { isIsoDate, PAYMENT_TERMS } from "./dates";
@@ -29,7 +29,7 @@ function decimalString({ label, maxDecimals, max, positive, emptyMeansZero }: De
     .transform((value) => (value === "" && emptyMeansZero ? "0" : value))
     .superRefine((value, ctx) => {
       const fail = (message: string) => ctx.addIssue({ code: "custom", message });
-      if (value === "") return fail(`Enter ${label.toLowerCase()}`);
+      if (value === "") return fail(`Enter ${/^[aeiou]/i.test(label) ? "an" : "a"} ${label.toLowerCase()}`);
       if (value.startsWith("-")) return fail(`${label} can't be negative`);
       if (!isDecimalString(value)) return fail("Enter a number, like 12.50");
       if (decimalPlaces(value) > maxDecimals) {

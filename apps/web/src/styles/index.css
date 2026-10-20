@@ -1,0 +1,105 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+/*
+ * Design tokens — "editorial stationery": warm paper, deep oak-green ink, serif display type.
+ * Every text/background pair used in the UI meets WCAG AA (4.5:1) contrast.
+ */
+@theme {
+  --font-sans: "Inter Variable", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: "Fraunces Variable", ui-serif, Georgia, "Times New Roman", serif;
+
+  --color-canvas: #f4f1ea;
+  --color-surface: #ffffff;
+  --color-surface-muted: #faf8f4;
+  --color-ink: #1c1a17;
+  --color-ink-muted: #5f594f;
+  --color-ink-subtle: #756e63;
+  --color-line: #e5dfd3;
+  --color-line-strong: #cfc7b8;
+  --color-accent: #2f5d4e;
+  --color-accent-hover: #264d40;
+  --color-accent-soft: #e3ece7;
+  --color-accent-ink: #1f4236;
+  --color-danger: #b42318;
+  --color-danger-soft: #fdf0ee;
+  --color-warning: #93370d;
+  --color-warning-soft: #fdf3e3;
+
+  --shadow-card: 0 1px 2px rgb(28 26 23 / 0.04), 0 1px 1px rgb(28 26 23 / 0.03);
+  --shadow-paper: 0 1px 2px rgb(28 26 23 / 0.06), 0 18px 40px -12px rgb(28 26 23 / 0.22);
+}
+
+@layer base {
+  html {
+    background-color: var(--color-canvas);
+    color: var(--color-ink);
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+
+  ::selection {
+    background-color: var(--color-accent-soft);
+  }
+
+  /* Native date pickers and selects follow the light theme. */
+  input,
+  select,
+  textarea {
+    color-scheme: light;
+  }
+}
+
+@utility tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/*
+ * Print: only the invoice document is printed. Everything else carries `print:hidden`.
+ * Zero page margins stop Chrome from adding its own URL/date header and footer; the
+ * document's own padding provides the visual margin.
+ */
+@page {
+  size: letter;
+  margin: 0;
+}
+
+@media print {
+  html,
+  body {
+    height: auto !important;
+    background: #fff !important;
+  }
+
+  .invoice-document {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .invoice-document tr,
+  .invoice-document .avoid-break {
+    break-inside: avoid;
+  }
+}

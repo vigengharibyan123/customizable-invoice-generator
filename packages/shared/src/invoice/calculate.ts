@@ -1,4 +1,4 @@
-import Big from "big.js";
+import { Big } from "big.js";
 import { parseDecimal, roundCents, toCents } from "./money";
 
 export interface TotalsInput {

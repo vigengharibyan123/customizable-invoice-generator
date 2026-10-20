@@ -3,6 +3,7 @@ import { z } from "zod";
 import { calculateTotals, type InvoiceTotals } from "./calculate";
 import { isIsoDate, PAYMENT_TERMS } from "./dates";
 import { decimalPlaces, isDecimalString } from "./money";
+import { ACCENT_COLOR_KEYS, DEFAULT_ACCENT_COLOR, type AccentColor } from "./theme";
 
 /**
  * One schema validates invoices everywhere: in the browser while typing (react-hook-form),
@@ -113,6 +114,7 @@ export const invoiceInputSchema = z
     taxRate: decimalString({ label: "Tax rate", maxDecimals: 3, max: "100", emptyMeansZero: true }),
     customFields: z.array(customFieldSchema).max(20, "Use at most 20 custom fields"),
     notes: z.string().trim().max(2000),
+    accentColor: z.enum(ACCENT_COLOR_KEYS).default(DEFAULT_ACCENT_COLOR),
   })
   .superRefine((invoice, ctx) => {
     if (isIsoDate(invoice.issueDate) && isIsoDate(invoice.dueDate)) {
@@ -196,6 +198,8 @@ export type SendInvoiceInput = z.input<typeof sendInvoiceSchema>;
 export interface NewInvoiceDefaults {
   number: string;
   business: Business;
+  /** Brand color of the most recent invoice, so new invoices stay on-brand. */
+  accentColor: AccentColor;
 }
 
 /** Shape of every API error response body. */

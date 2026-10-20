@@ -1,4 +1,4 @@
-import { INVOICE_STATUSES, PAYMENT_TERMS } from "@invoice/shared";
+import { ACCENT_COLOR_KEYS, INVOICE_STATUSES, PAYMENT_TERMS } from "@invoice/shared";
 import { relations, sql } from "drizzle-orm";
 import { check, index, integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
 
@@ -16,6 +16,7 @@ export const invoices = sqliteTable(
     issueDate: text("issue_date").notNull(),
     dueDate: text("due_date").notNull(),
     paymentTerms: text("payment_terms", { enum: PAYMENT_TERMS }).notNull(),
+    accentColor: text("accent_color", { enum: ACCENT_COLOR_KEYS }).notNull().default("oak"),
     businessName: text("business_name").notNull().default(""),
     businessEmail: text("business_email").notNull().default(""),
     businessPhone: text("business_phone").notNull().default(""),

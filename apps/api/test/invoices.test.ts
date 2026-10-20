@@ -192,13 +192,13 @@ describe("GET /api/invoices", () => {
 describe("GET /api/invoices/defaults", () => {
   it("suggests the next number and the business from the latest invoice", async () => {
     const empty = await request(app).get("/api/invoices/defaults").expect(200);
-    expect(empty.body).toEqual({ number: "INV-0001", business: DEFAULT_BUSINESS });
+    expect(empty.body).toEqual({ number: "INV-0001", business: DEFAULT_BUSINESS, accentColor: "oak" });
 
     const business = { ...invoiceInput().business, phone: "(718) 555-0199" };
     await createInvoice(invoiceInput({ number: "INV-0007", business }));
     const res = await request(app).get("/api/invoices/defaults").expect(200);
 
-    expect(res.body).toEqual({ number: "INV-0008", business });
+    expect(res.body).toEqual({ number: "INV-0008", business, accentColor: "oak" });
   });
 });
 
@@ -407,5 +407,30 @@ describe("serving the web app", () => {
     } finally {
       rmSync(webDist, { recursive: true, force: true });
     }
+  });
+});
+
+describe("brand color", () => {
+  it("defaults to oak, round-trips a chosen color and carries over to new invoices", async () => {
+    const created = await request(app).post("/api/invoices").send(invoiceInput()).expect(201);
+    expect((created.body.invoice as Invoice).accentColor).toBe("oak");
+
+    const id = (created.body.invoice as Invoice).id;
+    const updated = await request(app)
+      .put(`/api/invoices/${id}`)
+      .send(invoiceInput({ accentColor: "terracotta" }))
+      .expect(200);
+    expect((updated.body.invoice as Invoice).accentColor).toBe("terracotta");
+
+    const defaults = await request(app).get("/api/invoices/defaults").expect(200);
+    expect(defaults.body.accentColor).toBe("terracotta");
+  });
+
+  it("rejects an unknown color", async () => {
+    const response = await request(app)
+      .post("/api/invoices")
+      .send({ ...invoiceInput(), accentColor: "neon" })
+      .expect(422);
+    expect(response.body.error.fieldErrors).toHaveProperty("accentColor");
   });
 });

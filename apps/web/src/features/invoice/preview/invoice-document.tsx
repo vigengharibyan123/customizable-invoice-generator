@@ -1,4 +1,6 @@
 import {
+  ACCENT_COLORS,
+  DEFAULT_ACCENT_COLOR,
   formatCents,
   formatDate,
   formatMoneyString,
@@ -7,7 +9,7 @@ import {
   paymentTermsLabel,
   type InvoiceTotals,
 } from "@invoice/shared";
-import type { ReactNode } from "react";
+import type { CSSProperties, ReactNode } from "react";
 import { cn } from "@/lib/utils";
 import type { InvoiceFormValues } from "../form-model";
 
@@ -25,10 +27,14 @@ export function InvoiceDocument({ invoice, totals, className }: InvoiceDocumentP
   const { business, customer } = invoice;
   const visibleFields = invoice.customFields.filter((field) => field.visible && (field.label || field.value));
   const businessContact = [business.email, business.phone].filter(Boolean).join("  ·  ");
+  // The brand color re-points the accent tokens for everything inside the document.
+  const accent = ACCENT_COLORS[invoice.accentColor ?? DEFAULT_ACCENT_COLOR];
+  const brandStyle = { "--color-accent": accent.hex, "--color-accent-soft": accent.soft } as CSSProperties;
 
   return (
     <article
       aria-label={`Invoice ${invoice.number || ""}`.trim()}
+      style={brandStyle}
       className={cn(
         "invoice-document flex min-h-[1056px] w-[816px] print:min-h-[10.9in] flex-col border-t-[6px] border-accent bg-white px-14 pt-12 pb-12 text-[13px] leading-relaxed text-ink",
         className,

@@ -1,4 +1,6 @@
 import {
+  ACCENT_COLOR_KEYS,
+  ACCENT_COLORS,
   calculateLiveTotals,
   dueDateForTerms,
   formatCents,
@@ -174,7 +176,31 @@ export function BusinessSection() {
         <Field name="business.address" label="Address" optional error={errorFor("business.address")}>
           {(a11y) => <Textarea {...a11y} {...register("business.address")} rows={2} autoComplete="street-address" />}
         </Field>
+        <BrandColorPicker />
       </div>
     </SectionCard>
+  );
+}
+
+/** Native radio buttons styled as swatches: arrow keys, labels and focus work out of the box. */
+function BrandColorPicker() {
+  const { register } = useInvoiceForm();
+  return (
+    <fieldset className="sm:col-span-2">
+      <legend className="text-[0.8125rem] font-medium text-ink">Brand color</legend>
+      <p className="mt-1 text-[0.8125rem] text-ink-muted">Used for the invoice heading, totals and email.</p>
+      <div className="mt-3 flex flex-wrap gap-2">
+        {ACCENT_COLOR_KEYS.map((key) => (
+          <label
+            key={key}
+            className="flex cursor-pointer items-center gap-2 rounded-full border border-line-strong bg-surface py-1.5 pr-3 pl-1.5 text-sm transition-colors hover:border-ink/35 has-checked:border-ink has-checked:ring-1 has-checked:ring-ink has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-accent"
+          >
+            <input type="radio" value={key} {...register("accentColor")} className="sr-only" />
+            <span aria-hidden className="size-5 rounded-full" style={{ backgroundColor: ACCENT_COLORS[key].hex }} />
+            {ACCENT_COLORS[key].label}
+          </label>
+        ))}
+      </div>
+    </fieldset>
   );
 }

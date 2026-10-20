@@ -2,6 +2,7 @@ import { randomUUID } from "node:crypto";
 import {
   calculateTotals,
   centsToDecimal,
+  DEFAULT_ACCENT_COLOR,
   nextInvoiceNumber,
   parseDecimal,
   toCents,
@@ -49,6 +50,7 @@ function invoiceColumns(data: InvoiceData, totals: InvoiceTotals) {
     issueDate: data.issueDate,
     dueDate: data.dueDate,
     paymentTerms: data.paymentTerms,
+    accentColor: data.accentColor,
     businessName: data.business.name,
     businessEmail: data.business.email,
     businessPhone: data.business.phone,
@@ -114,6 +116,7 @@ function toInvoice(row: InvoiceRow): Invoice {
     issueDate: row.issueDate,
     dueDate: row.dueDate,
     paymentTerms: row.paymentTerms,
+    accentColor: row.accentColor,
     business: {
       name: row.businessName,
       email: row.businessEmail,
@@ -283,12 +286,13 @@ export function createInvoiceRepository(
 
     defaults() {
       const numbers = db.select({ number: invoices.number }).from(invoices).all();
-      const latestBusiness = db
+      const latest = db
         .select({
           name: invoices.businessName,
           email: invoices.businessEmail,
           phone: invoices.businessPhone,
           address: invoices.businessAddress,
+          accentColor: invoices.accentColor,
         })
         .from(invoices)
         .orderBy(desc(invoices.createdAt))
@@ -296,7 +300,10 @@ export function createInvoiceRepository(
         .get();
       return {
         number: nextInvoiceNumber(numbers.map((row) => row.number)),
-        business: latestBusiness ?? DEFAULT_BUSINESS,
+        business: latest
+          ? { name: latest.name, email: latest.email, phone: latest.phone, address: latest.address }
+          : DEFAULT_BUSINESS,
+        accentColor: latest?.accentColor ?? DEFAULT_ACCENT_COLOR,
       };
     },
   };

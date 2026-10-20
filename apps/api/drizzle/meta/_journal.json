@@ -8,6 +8,13 @@
       "when": 1792489133393,
       "tag": "0000_init",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1792490179632,
+      "tag": "0001_brand_color",
+      "breakpoints": true
     }
   ]
 }

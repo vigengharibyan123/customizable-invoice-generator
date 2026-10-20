@@ -1,0 +1,1 @@
+ALTER TABLE `invoices` ADD `accent_color` text DEFAULT 'oak' NOT NULL;

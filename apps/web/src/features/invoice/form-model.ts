@@ -35,6 +35,7 @@ export function blankInvoice(defaults: NewInvoiceDefaults, today = todayIsoDate(
     taxRate: "0",
     customFields: [],
     notes: "",
+    accentColor: defaults.accentColor,
   };
 }
 
@@ -51,6 +52,7 @@ export function toFormValues(invoice: Invoice): InvoiceFormValues {
     taxRate: invoice.taxRate,
     customFields: invoice.customFields.map((field) => ({ ...field })),
     notes: invoice.notes,
+    accentColor: invoice.accentColor,
   };
 }
 

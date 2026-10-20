@@ -139,7 +139,8 @@ export function InvoiceEditor({ invoice, initialValues, openSendOnMount = false,
                 <span className="max-sm:sr-only">Invoices</span>
               </Link>
             </Button>
-            <div className="flex min-w-0 flex-1 items-center gap-3">
+            {/* min-w keeps the title readable: on narrow screens the actions wrap below instead. */}
+            <div className="flex min-w-36 flex-1 items-center gap-3">
               <h1 className="truncate font-display text-xl font-semibold tracking-tight">
                 {invoice ? invoice.number : "New invoice"}
               </h1>
@@ -150,6 +151,7 @@ export function InvoiceEditor({ invoice, initialValues, openSendOnMount = false,
               {invoice && (
                 <Button
                   variant="ghost"
+                  className="max-sm:hidden"
                   onClick={() => navigate("/invoices/new", { state: { duplicateOf: invoice } })}
                   aria-label="Duplicate invoice"
                   title="Start a new draft with the same customer and items"

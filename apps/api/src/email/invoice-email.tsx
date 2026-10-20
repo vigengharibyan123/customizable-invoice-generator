@@ -1,4 +1,5 @@
 import {
+  ACCENT_COLORS,
   formatCents,
   formatDate,
   formatMoneyString,
@@ -25,8 +26,6 @@ const color = {
   ink: "#1C1A17",
   muted: "#6B645A",
   line: "#E5DFD3",
-  accent: "#2F5D4E",
-  accentSoft: "#E3ECE7",
 };
 
 // Family names are unquoted on purpose: quotes would be entity-escaped inside style attributes.
@@ -100,8 +99,10 @@ function Lines({ text }: { text: string }) {
 }
 
 function AmountDue({ invoice }: { invoice: Invoice }) {
+  // The business's brand color, as chosen in the editor.
+  const accent = ACCENT_COLORS[invoice.accentColor];
   return (
-    <LayoutTable style={{ backgroundColor: color.accentSoft, borderRadius: 6 }}>
+    <LayoutTable style={{ backgroundColor: accent.soft, borderRadius: 6 }}>
       <tr>
         <td style={{ padding: "20px 24px" }}>
           <div style={eyebrow}>Amount due</div>
@@ -111,7 +112,7 @@ function AmountDue({ invoice }: { invoice: Invoice }) {
               fontFamily: serif,
               fontSize: 36,
               lineHeight: "44px",
-              color: color.accent,
+              color: accent.hex,
             }}
           >
             {formatCents(invoice.totals.totalCents)}

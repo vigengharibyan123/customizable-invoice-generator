@@ -192,5 +192,5 @@ function TotalRow({ label, value }: { label: string; value: string }) {
 
 /** Shown on screen while a field is empty; invisible on paper. */
 function Placeholder({ children }: { children: ReactNode }) {
-  return <span className="text-ink-subtle/70 italic print:invisible">{children}</span>;
+  return <span className="text-ink-subtle italic print:invisible">{children}</span>;
 }

@@ -118,13 +118,14 @@ function InvoiceOverview({ invoices, today }: { invoices: InvoiceSummary[]; toda
 
 function Stat({ label, value, detail, tone }: { label: string; value: string; detail: string; tone?: "warning" }) {
   return (
-    <Card className="min-w-0 px-3 py-3 sm:px-5 sm:py-4">
+    // A <div> is the only valid wrapper for a dt/dd group inside <dl>.
+    <div className="min-w-0 rounded-2xl border border-line bg-surface px-3 py-3 shadow-card sm:px-5 sm:py-4">
       <dt className="text-xs text-ink-muted sm:text-sm">{label}</dt>
       <dd className={`mt-1 truncate font-display text-base font-semibold tabular sm:text-2xl ${tone === "warning" ? "text-warning" : ""}`}>
         {value}
       </dd>
       <dd className="mt-0.5 hidden text-xs text-ink-muted sm:block">{detail}</dd>
-    </Card>
+    </div>
   );
 }
 

@@ -211,6 +211,9 @@ export function InvoiceEditor({ invoice, initialValues, openSendOnMount = false,
 
           <aside
             aria-label="Live invoice preview"
+            // A scrollable region on desktop, so keyboard users must be able to focus and scroll it.
+            role="region"
+            tabIndex={0}
             className={cn(
               "min-w-0 lg:sticky lg:top-[8.5rem] lg:max-h-[calc(100dvh-9.5rem)] lg:overflow-y-auto lg:rounded-xl lg:p-1 print:!block print:static print:max-h-none print:overflow-visible print:p-0",
               mobileView === "edit" && "max-lg:hidden",

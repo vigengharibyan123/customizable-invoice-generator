@@ -3,7 +3,6 @@ import { createBrowserRouter, Navigate, RouterProvider } from "react-router";
 import { Toaster } from "sonner";
 import { AppLayout } from "@/components/app-layout";
 import { NotFoundPage } from "@/components/not-found-page";
-import { InvoiceEditorPage } from "@/features/invoice/editor/invoice-editor-page";
 import { InvoicesPage } from "@/features/invoice/list/invoices-page";
 
 const queryClient = new QueryClient({
@@ -13,14 +12,20 @@ const queryClient = new QueryClient({
   },
 });
 
+const loadEditor = () =>
+  import("@/features/invoice/editor/invoice-editor-page").then((module) => ({
+    Component: module.InvoiceEditorPage,
+  }));
+
 const router = createBrowserRouter([
   {
     element: <AppLayout />,
     children: [
       { index: true, element: <Navigate to="/invoices" replace /> },
       { path: "invoices", element: <InvoicesPage /> },
-      { path: "invoices/new", element: <InvoiceEditorPage /> },
-      { path: "invoices/:invoiceId", element: <InvoiceEditorPage /> },
+      // The editor (forms, validation, dialogs) is code-split so the list loads fast.
+      { path: "invoices/new", lazy: loadEditor },
+      { path: "invoices/:invoiceId", lazy: loadEditor },
       { path: "*", element: <NotFoundPage /> },
     ],
   },
